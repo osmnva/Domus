@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ApartmentDto {
     private Long id;
-    private String number;
+    private Integer number;
     private String ownerName;
+    private Boolean hasPaid = false;
 }
