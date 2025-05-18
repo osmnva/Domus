@@ -1,4 +1,4 @@
-package services;
+package com.domus.domus.services;
 
 import com.domus.domus.entities.Apartment;
 import com.domus.domus.entities.User;
