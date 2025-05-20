@@ -21,27 +21,26 @@ public class ApartmentController {
         this.apartmentService = apartmentService;
     }
 
-    @GetMapping
+    @GetMapping("/admin/all")
     public ResponseEntity<List<Apartment>> getAllApartments() {
         return ResponseEntity.ok(apartmentService.getAllApartments());
     }
 
-    @PostMapping("/{id}/pay")
+    @PostMapping("/admin/{id}/pay")
     public ResponseEntity<String> markAsPaid(@PathVariable Long id) {
         apartmentService.markAsPaid(id);
         return ResponseEntity.ok("Квартира №" + id + " отмечена как оплатившая.");
     }
 
-    @GetMapping("/debtors")
+    @GetMapping("/admin/debtors")
     public ResponseEntity<List<Apartment>> getDebtors() {
         return ResponseEntity.ok(apartmentService.getDebtors());
     }
 
-    @GetMapping("/mine")
+    @GetMapping("/tenant/mine")
     public ResponseEntity<Apartment> getMyApartment(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         Apartment apartment = apartmentService.getMyApartment(username);
         return ResponseEntity.ok(apartment);
     }
 }
-

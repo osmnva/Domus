@@ -29,8 +29,10 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/tenant/**").hasAnyRole("TENANT", "ADMIN")
+                        .requestMatchers("/api/announcements/all").hasAnyRole("TENANT", "ADMIN")
+                        .requestMatchers("/api/apartments/tenant/**").hasAnyRole("TENANT", "ADMIN")
+                        .requestMatchers("/api/apartments/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/announcements/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

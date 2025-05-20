@@ -19,13 +19,12 @@ public class AnnouncementController {
         this.announcementService = announcementService;
     }
 
-
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Announcement>> getAllAnnouncements() {
         return ResponseEntity.ok(announcementService.getAllAnnouncements());
     }
 
-    @PostMapping
+    @PostMapping("/admin/create")
     public ResponseEntity<Announcement> createAnnouncement(@RequestBody Announcement announcement) {
         Announcement created = announcementService.createAnnouncement(announcement.getTitle(), announcement.getMessage());
         return ResponseEntity.ok(created);
