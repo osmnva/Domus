@@ -1,9 +1,16 @@
 package com.domus.domus.entities;
 
+import com.domus.domus.entities.enums.AnnouncementType;
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@Table(name = "announcements")
 public class Announcement {
 
     @Id
@@ -11,51 +18,18 @@ public class Announcement {
     private Long id;
 
     private String title;
+    private String content;
 
-    private String message;
+    @Enumerated(EnumType.STRING)
+    private AnnouncementType type;
 
-    private LocalDate datePosted;
+    @Column(nullable = false)
+    private Double requiredAmount;
 
-    public Announcement() {}
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private UserEntity createdBy;
 
-    public Announcement(String title, String message, LocalDate datePosted) {
-        this.title = title;
-        this.message = message;
-        this.datePosted = datePosted;
-    }
-
-    // Getters & Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public LocalDate getDatePosted() {
-        return datePosted;
-    }
-
-    public void setDatePosted(LocalDate datePosted) {
-        this.datePosted = datePosted;
-    }
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime deadline;
 }
-

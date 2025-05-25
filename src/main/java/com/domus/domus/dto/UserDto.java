@@ -1,13 +1,15 @@
 package com.domus.domus.dto;
 
-import com.domus.domus.entities.Role;
-import lombok.Data;
+import lombok.*;
+import java.time.LocalDateTime;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
     private Long id;
-    private String username;
-    //private String email;
-    private Role role;
+    private String email;
     private String password;
+    private LocalDateTime createdAt;
 }
