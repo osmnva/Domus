@@ -1,6 +1,8 @@
 package com.domus.domus.services;
 
 import com.domus.domus.dto.PaymentRequestDTO;
+import com.domus.domus.dto.PaymentResponseDTO;
+import com.domus.domus.dto.UserSummaryDTO;
 import com.domus.domus.entities.Announcement;
 import com.domus.domus.entities.Payment;
 import com.domus.domus.entities.UserEntity;
@@ -35,22 +37,34 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
-    public List<Payment> getUserPayments(UserEntity user) {
-        return paymentRepository.findByUser(user);
+    public List<PaymentResponseDTO> getUserPayments(UserEntity user) {
+        return paymentRepository.findByUser(user)
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
-    public List<Payment> getPendingPayments(UserEntity user) {
-        return paymentRepository.findByUserAndIsPaidFalse(user);
+    public List<PaymentResponseDTO> getPendingPayments(UserEntity user) {
+        return paymentRepository.findByUserAndIsPaidFalse(user)
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
-    public List<Payment> getAllPayments() {
-        return paymentRepository.findAll();
+    public List<PaymentResponseDTO> getAllPayments() {
+        return paymentRepository.findAll()
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
-    public List<Payment> getPaymentsByAnnouncement(Long announcementId) {
+    public List<PaymentResponseDTO> getPaymentsByAnnouncement(Long announcementId) {
         Announcement announcement = announcementRepository.findById(announcementId)
                 .orElseThrow(() -> new RuntimeException("Announcement not found"));
-        return paymentRepository.findByAnnouncement(announcement);
+        return paymentRepository.findByAnnouncement(announcement)
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
     public List<UserEntity> getDebtors(Long announcementId) {
@@ -66,5 +80,20 @@ public class PaymentService {
                     return !hasPaid && isPastDeadline;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public PaymentResponseDTO toDto(Payment payment) {
+        return PaymentResponseDTO.builder()
+                .id(payment.getId())
+                .user(new UserSummaryDTO(
+                        payment.getUser().getId(),
+                        payment.getUser().getUsername()
+                ))
+                .announcement(payment.getAnnouncement())
+                .amount(payment.getAmount())
+                .isPaid(payment.getIsPaid())
+                .paymentDate(payment.getPaymentDate())
+                .dueDate(payment.getDueDate())
+                .build();
     }
 }

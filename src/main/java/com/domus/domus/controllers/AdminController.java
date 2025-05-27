@@ -1,14 +1,13 @@
 package com.domus.domus.controllers;
 
 import com.domus.domus.dto.AnnouncementRequestDTO;
+import com.domus.domus.dto.PaymentResponseDTO;
 import com.domus.domus.entities.Announcement;
-import com.domus.domus.entities.Payment;
 import com.domus.domus.entities.UserEntity;
 import com.domus.domus.services.AnnouncementService;
 import com.domus.domus.services.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,12 +36,12 @@ public class AdminController {
     }
 
     @GetMapping("/payments")
-    public List<Payment> getAllPayments() {
+    public List<PaymentResponseDTO> getAllPayments() {
         return paymentService.getAllPayments();
     }
 
     @GetMapping("/announcements/{id}/payments")
-    public List<Payment> getPaymentsByAnnouncement(@PathVariable Long id) {
+    public List<PaymentResponseDTO> getPaymentsByAnnouncement(@PathVariable Long id) {
         return paymentService.getPaymentsByAnnouncement(id);
     }
 }

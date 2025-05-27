@@ -1,8 +1,8 @@
 package com.domus.domus.controllers;
 
 import com.domus.domus.dto.PaymentRequestDTO;
+import com.domus.domus.dto.PaymentResponseDTO;
 import com.domus.domus.entities.Announcement;
-import com.domus.domus.entities.Payment;
 import com.domus.domus.entities.UserEntity;
 import com.domus.domus.services.AnnouncementService;
 import com.domus.domus.services.PaymentService;
@@ -28,19 +28,19 @@ public class UserController {
     }
 
     @PostMapping("/payments")
-    public Payment createPayment(@RequestBody PaymentRequestDTO dto) {
+    public PaymentResponseDTO createPayment(@RequestBody PaymentRequestDTO dto) {
         UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return paymentService.createPayment(dto, user);
+        return paymentService.toDto(paymentService.createPayment(dto, user));
     }
 
     @GetMapping("/payments")
-    public List<Payment> getMyPayments() {
+    public List<PaymentResponseDTO> getMyPayments() {
         UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return paymentService.getUserPayments(user);
     }
 
     @GetMapping("/payments/pending")
-    public List<Payment> getPendingPayments() {
+    public List<PaymentResponseDTO> getPendingPayments() {
         UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return paymentService.getPendingPayments(user);
     }
