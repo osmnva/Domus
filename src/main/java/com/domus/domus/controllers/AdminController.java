@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -17,18 +18,31 @@ import java.util.List;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
-
     private final AnnouncementService announcementService;
     private final PaymentService paymentService;
 
     @PostMapping("/announcements")
     public Announcement createAnnouncement(@RequestBody AnnouncementRequestDTO dto) {
-        UserEntity admin = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return announcementService.createAnnouncement(dto, admin);
+        return announcementService.createAnnouncement(dto);
+    }
+
+    @GetMapping("/announcements")
+    public List<Announcement> getAllAnnouncements() {
+        return announcementService.getAllAnnouncements();
     }
 
     @GetMapping("/announcements/{id}/debtors")
-    public List<Payment> getDebtors(@PathVariable Long id) {
+    public List<UserEntity> getDebtors(@PathVariable Long id) {
         return paymentService.getDebtors(id);
+    }
+
+    @GetMapping("/payments")
+    public List<Payment> getAllPayments() {
+        return paymentService.getAllPayments();
+    }
+
+    @GetMapping("/announcements/{id}/payments")
+    public List<Payment> getPaymentsByAnnouncement(@PathVariable Long id) {
+        return paymentService.getPaymentsByAnnouncement(id);
     }
 }

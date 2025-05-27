@@ -1,13 +1,16 @@
 package com.domus.domus.controllers;
 
 import com.domus.domus.dto.PaymentRequestDTO;
+import com.domus.domus.entities.Announcement;
 import com.domus.domus.entities.Payment;
 import com.domus.domus.entities.UserEntity;
+import com.domus.domus.services.AnnouncementService;
 import com.domus.domus.services.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -17,6 +20,12 @@ import java.util.List;
 public class UserController {
 
     private final PaymentService paymentService;
+    private final AnnouncementService announcementService;
+
+    @GetMapping("/announcements")
+    public List<Announcement> getAllAnnouncements() {
+        return announcementService.getAllAnnouncements();
+    }
 
     @PostMapping("/payments")
     public Payment createPayment(@RequestBody PaymentRequestDTO dto) {
@@ -28,5 +37,11 @@ public class UserController {
     public List<Payment> getMyPayments() {
         UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return paymentService.getUserPayments(user);
+    }
+
+    @GetMapping("/payments/pending")
+    public List<Payment> getPendingPayments() {
+        UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return paymentService.getPendingPayments(user);
     }
 }

@@ -29,19 +29,18 @@ public class AdminService {
         announcement.setContent(dto.getContent());
         announcement.setRequiredAmount(dto.getRequiredAmount());
         announcement.setDeadline(dto.getDeadline());
-        announcement.setCreatedBy(admin);
 
         return announcementRepo.save(announcement);
     }
 
-    public List<UserEntity> getDebtors(Long announcementId) {
-        Announcement announcement = announcementRepo.findById(announcementId)
-                .orElseThrow(() -> new RuntimeException("Announcement not found"));
-
-        return userRepo.findAll().stream()
-                .filter(user -> paymentRepo.findByUserAndAnnouncement(user, announcement)
-                        .map(payment -> !payment.getIsPaid() && LocalDateTime.now().isAfter(payment.getDueDate()))
-                        .orElse(true))
-                .collect(Collectors.toList());
-    }
+//    public List<UserEntity> getDebtors(Long announcementId) {
+//        Announcement announcement = announcementRepo.findById(announcementId)
+//                .orElseThrow(() -> new RuntimeException("Announcement not found"));
+//
+//        return userRepo.findAll().stream()
+//                .filter(user -> paymentRepo.findByUserAndAnnouncement(user, announcement)
+//                        .map(payment -> !payment.getIsPaid() && LocalDateTime.now().isAfter(payment.getDueDate()))
+//                        .orElse(true))
+//                .collect(Collectors.toList());
+//    }
 }

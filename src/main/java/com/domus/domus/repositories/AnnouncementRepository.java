@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
     List<Announcement> findByType(AnnouncementType type);
-    List<Announcement> findByCreatedBy(UserEntity user);
 }

@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "announcements")
 public class Announcement {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +25,8 @@ public class Announcement {
     @Column(nullable = false)
     private Double requiredAmount;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by")
-    private UserEntity createdBy;
-
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(nullable = false)
     private LocalDateTime deadline;
 }

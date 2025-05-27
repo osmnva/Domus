@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
-    List<Payment> findByAnnouncementAndIsPaidFalse(Announcement announcement);
     List<Payment> findByUser(UserEntity user);
-    Optional<Payment> findByUserAndAnnouncement(UserEntity user, Announcement announcement);
+    List<Payment> findByUserAndIsPaidFalse(UserEntity user);
+    List<Payment> findByAnnouncement(Announcement announcement);
+    boolean existsByUserAndAnnouncementAndIsPaidTrue(UserEntity user, Announcement announcement);
 }
