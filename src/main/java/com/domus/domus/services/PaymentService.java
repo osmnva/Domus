@@ -21,7 +21,6 @@ public class PaymentService {
     private final AnnouncementRepository announcementRepository;
     private final UserRepository userRepository;
 
-    // User makes a payment
     public Payment createPayment(PaymentRequestDTO dto, UserEntity user) {
         Announcement announcement = announcementRepository.findById(dto.getAnnouncementId())
                 .orElseThrow(() -> new RuntimeException("Announcement not found"));
@@ -36,29 +35,24 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
-    // Get payments for a specific user (used by user)
     public List<Payment> getUserPayments(UserEntity user) {
         return paymentRepository.findByUser(user);
     }
 
-    // Get pending payments for a user (used by user)
     public List<Payment> getPendingPayments(UserEntity user) {
         return paymentRepository.findByUserAndIsPaidFalse(user);
     }
 
-    // Get all payments (used by admin)
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
 
-    // Get payments for a specific announcement (used by admin)
     public List<Payment> getPaymentsByAnnouncement(Long announcementId) {
         Announcement announcement = announcementRepository.findById(announcementId)
                 .orElseThrow(() -> new RuntimeException("Announcement not found"));
         return paymentRepository.findByAnnouncement(announcement);
     }
 
-    // Get debtors for an announcement (existing functionality)
     public List<UserEntity> getDebtors(Long announcementId) {
         Announcement announcement = announcementRepository.findById(announcementId)
                 .orElseThrow(() -> new RuntimeException("Announcement not found"));
